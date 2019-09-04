@@ -1,0 +1,32 @@
+﻿CREATE PROCEDURE [dabarc].[sp_ODBC_ReadRowODBC] 
+	(
+	  @odbc_id INT
+	)AS
+	
+  SELECT [odbc_id]
+      ,[driver_id]
+      ,[odbc_name]
+      ,[odbc_server]
+      ,[odbc_database]
+      ,[odbc_esquema]
+      ,[odbc_user]
+      ,[odbc_pasword]
+      ,[create_date]
+      ,[register_user]
+      ,[modify_date]
+      ,[modify_user]
+      ,[last_error]
+      ,[status]
+      ,[file_path]
+      ,[file_separation]
+      ,[odbc_type]
+      ,[odbc_port]
+      ,[odbc_protocol]
+      ,[odbc_infoServidor]
+      ,[odbc_infoServicio]
+      ,[odbc_infoProtocolo]
+      ,[odbc_notcolname]
+      ,[file_dll]
+      ,[odbc_alias]
+  FROM [dabarc].[t_ODBC]
+  WHERE  odbc_id = @odbc_id

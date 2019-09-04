@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dabarc].[t_RFF] (
+    [rule_id]           INT            IDENTITY (1, 1) NOT NULL,
+    [name]              NVARCHAR (128) NOT NULL,
+    [description]       NVARCHAR (256) NULL,
+    [short_description] NVARCHAR (50)  NULL,
+    [active]            BIT            CONSTRAINT [DF_t_RFF_active] DEFAULT ((0)) NOT NULL,
+    [priority]          INT            CONSTRAINT [DF_t_RFF_priority] DEFAULT ((0)) NOT NULL,
+    [create_date]       DATETIME       NOT NULL,
+    [register_date]     DATETIME       NULL,
+    [execute_date]      DATETIME       NULL,
+    [register_user]     NVARCHAR (15)  NULL,
+    [execute_user]      NVARCHAR (15)  NULL,
+    [execute_time]      NVARCHAR (25)  NULL,
+    [affected_rows]     INT            CONSTRAINT [DF_t_RFF_affected_rows] DEFAULT ((0)) NOT NULL,
+    [modify_date]       DATETIME       NULL,
+    [modify_user]       NVARCHAR (15)  NULL,
+    [registered]        BIT            CONSTRAINT [DF_t_RFF_registered] DEFAULT ((0)) NOT NULL,
+    [table_id]          INT            NULL,
+    [last_error]        NVARCHAR (256) CONSTRAINT [DF_t_RFF_last_error] DEFAULT (N'Sin ejecutar') NULL,
+    [status]            INT            CONSTRAINT [DF_t_RFF_status] DEFAULT ((0)) NULL,
+    [report_type]       CHAR (14)      NULL,
+    CONSTRAINT [PK_t_RFF] PRIMARY KEY CLUSTERED ([rule_id] ASC),
+    CONSTRAINT [FK_t_RFF_t_TFF] FOREIGN KEY ([table_id]) REFERENCES [dabarc].[t_TFF] ([table_id]) ON UPDATE CASCADE
+);
+

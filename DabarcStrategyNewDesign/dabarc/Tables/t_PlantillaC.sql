@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dabarc].[t_PlantillaC] (
+    [plantillac_id]   INT           IDENTITY (1, 1) NOT NULL,
+    [plantillad_id]   INT           NOT NULL,
+    [pl_NameCol]      NVARCHAR (60) NOT NULL,
+    [pl_typeOdbc]     NVARCHAR (50) NOT NULL,
+    [pl_size]         NVARCHAR (50) NULL,
+    [pl_precision]    INT           NOT NULL,
+    [create_date]     DATETIME      NOT NULL,
+    [register_user]   NVARCHAR (15) NOT NULL,
+    [active]          BIT           NOT NULL,
+    [last_status]     NVARCHAR (15) NULL,
+    [pl_isnull]       BIT           CONSTRAINT [DF_t_PlantillaC_pl_isnull] DEFAULT ((0)) NOT NULL,
+    [pl_sType]        NVARCHAR (50) NULL,
+    [pl_sSize]        NVARCHAR (50) NULL,
+    [Pl_sPrecision]   INT           CONSTRAINT [DF_t_PlantillaC_Pl_sPrecision] DEFAULT ((0)) NULL,
+    [pl_sNull]        BIT           CONSTRAINT [DF_t_PlantillaC_pl_sNull] DEFAULT ((0)) NULL,
+    [modify_date]     DATETIME      NULL,
+    [modify_user]     NVARCHAR (15) NULL,
+    [pl_scale]        INT           CONSTRAINT [DF_t_PlantillaC_pl_scale] DEFAULT ((0)) NOT NULL,
+    [pl_sScale]       INT           CONSTRAINT [DF_t_PlantillaC_pl_sScale] DEFAULT ((0)) NOT NULL,
+    [pl_sRType]       NVARCHAR (50) NULL,
+    [pl_ReplaceValue] NVARCHAR (70) NULL,
+    CONSTRAINT [PK_t_PlantillaC] PRIMARY KEY CLUSTERED ([plantillac_id] ASC)
+);
+

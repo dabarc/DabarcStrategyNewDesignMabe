@@ -1,0 +1,48 @@
+﻿CREATE PROCEDURE [dabarc].[sp_ODBC_GetOdbcDriverFields] @driver_id INT
+AS 
+BEGIN 
+ 
+   CREATE TABLE #Fields
+   ( 
+	id int not null primary key,
+	odbc_driver NVARCHAR(60)  NOT NULL,
+	odbc_group          BIT NOT NULL DEFAULT(0),
+	connection_group    BIT NOT NULL DEFAULT(0),
+	server_group	    BIT NOT NULL DEFAULT(0),
+	port_group		    BIT NOT NULL DEFAULT(0),
+	protocol_group	    BIT NOT NULL DEFAULT(0),
+	database_group	    BIT NOT NULL DEFAULT(0),
+	alias_group		    BIT NOT NULL DEFAULT(0),
+	user_group		    BIT NOT NULL DEFAULT(0),
+	password_group	    BIT NOT NULL DEFAULT(0),
+	file_path_group	    BIT NOT NULL DEFAULT(0),
+	file_separetor_group BIT NOT NULL DEFAULT(0),
+	no_col_header_group BIT NOT NULL DEFAULT(0)
+   );
+
+INSERT INTO #FIELDS VALUES  (2,'Mss Sql Server',1,1,1,0,0,1,1,1,1,0,0,0)
+INSERT INTO #FIELDS VALUES  (3,'Oracle',1,1,1,0,0,1,1,1,1,0,0,0)
+INSERT INTO #FIELDS VALUES  (4,'SAP',1,1,1,0,0,1,1,1,1,0,0,0)
+INSERT INTO #FIELDS VALUES  (5,'DB2',1,1,1,1,1,1,1,1,1,0,0,0)
+INSERT INTO #FIELDS VALUES  (6,'DB2 AS400',1,1,1,0,0,1,1,1,1,0,0,0)
+INSERT INTO #FIELDS VALUES  (7,'IMS',1,1,1,0,0,1,1,1,1,0,0,0)
+INSERT INTO #FIELDS VALUES  (8,'INFORMIX',1,1,1,0,0,1,1,1,1,0,0,0)
+INSERT INTO #FIELDS VALUES  (9,'MAXDB',1,1,1,0,0,1,1,1,1,0,0,0)
+INSERT INTO #FIELDS VALUES  (11,'Oracle 8',1,1,1,0,0,1,1,1,1,0,0,0)
+INSERT INTO #FIELDS VALUES  (12,'Progress',1,1,1,0,0,1,1,1,1,0,0,0)
+INSERT INTO #FIELDS VALUES  (13,'Sybase',1,1,1,1,0,1,1,1,1,0,0,0)
+INSERT INTO #FIELDS VALUES  (14,'Archivo de Texto',1,1,0,0,0,0,0,0,0,1,1,1)
+INSERT INTO #FIELDS VALUES  (15,'Excel',1,1,0,0,0,0,1,0,0,1,0,0)
+INSERT INTO #FIELDS VALUES  (16,'Access .MDB',1,1,0,0,0,0,0,0,0,1,0,0)
+INSERT INTO #FIELDS VALUES  (17,'Access .ACCDB',1,1,0,0,0,0,0,0,0,1,0,0)
+INSERT INTO #FIELDS VALUES  (18,'DB Firebird',1,1,0,0,0,0,0,1,1,1,0,0)
+INSERT INTO #FIELDS VALUES  (19,'Sybase_ASE',1,1,1,1,0,1,1,1,1,0,0,0)
+INSERT INTO #FIELDS VALUES  (20,'HANA',1,1,1,1,0,1,1,1,1,0,0,0)
+INSERT INTO #FIELDS VALUES  (21,'FOXPRO',1,1,0,0,0,0,0,1,1,1,0,0)
+INSERT INTO #FIELDS VALUES  (22,'MYSQL',1,1,1,1,0,1,1,1,1,0,0,0)
+
+
+
+SELECT * FROM #Fields WHERE id = @driver_id;
+
+END

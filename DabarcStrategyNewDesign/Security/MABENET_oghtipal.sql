@@ -1,0 +1,2 @@
+﻿CREATE USER [MABENET\oghtipal] FOR LOGIN [MABENET\oghtipal];
+
