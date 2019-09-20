@@ -1,23 +1,18 @@
 ﻿--EXEC [dabarc].[sp_SSIS_UpdateListOfSSIS_Reg] 3, 1, 4, 0, 'admin';
-CREATE PROCEDURE  [dabarc].[sp_SSIS_UpdateListOfSSIS_Reg] 
-	
-	(	
+CREATE PROCEDURE  [dabarc].[sp_SSIS_UpdateListOfSSIS_Reg] 	
 	@ssis_id		INT,
 	@table_id		INT,
 	@database_id	INT,
 	@registered		INT,
-	@register_user	NVARCHAR(15)
-	)AS
- 
-	DECLARE @IsFromDB	   BIT
+	@register_user	NVARCHAR(100)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DECLARE @IsFromDB	   BIT = 0
 	DECLARE @register_date DATETIME
- 
 	-----------------------------------------------------------------------------------------------------
 	--- Si no tiene tablaid indica que se modifica desde la base de datos
 	-----------------------------------------------------------------------------------------------------
-	
-	SELECT @IsFromDB = 0
-	
 	IF (@table_id = 0)
 		SELECT @IsFromDB = 1
 	
@@ -32,7 +27,6 @@ CREATE PROCEDURE  [dabarc].[sp_SSIS_UpdateListOfSSIS_Reg]
 					 register_date	= @register_date,
 					 register_user	= @register_user				
 		WHERE        (ssis_id		= @ssis_id)
-		
 	END
 	ELSE
 	BEGIN
@@ -46,15 +40,8 @@ CREATE PROCEDURE  [dabarc].[sp_SSIS_UpdateListOfSSIS_Reg]
 		SET			 registered		= 0,	
 					 register_date	= @register_date,
 					 register_user	= @register_user				
-		WHERE        (ssis_id		= @ssis_id)
-			
+		WHERE        (ssis_id		= @ssis_id)	
 	END
 	   
-	EXECUTE [dabarc].[sp_SSIS_ReadListOfNumber_Reg] @table_id , @register_user
-
-   --IF (@registered = 1)
-   --BEGIN
-   --   DECLARE @name VARCHAR(50)
-   --   SELECT @name = name FROM t_SSIS WHERE ssis_id = @ssis_id
-   --   EXEC sp_INT_InsertAutoRegInterface @name, @ssis_id
-   --END
+	EXECUTE [dabarc].[sp_SSIS_ReadListOfNumber_Reg] @table_id , @register_user , @database_id
+END
