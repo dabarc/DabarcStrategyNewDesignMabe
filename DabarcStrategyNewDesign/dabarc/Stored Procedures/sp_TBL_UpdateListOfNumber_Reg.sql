@@ -1,52 +1,47 @@
 ﻿CREATE PROCEDURE  [dabarc].[sp_TBL_UpdateListOfNumber_Reg]	
-	(
 		@TypeOfDB varchar(5),	
 		@database_id int,
-		@register_user nvarchar(50)
-	)
-	
+		@register_user nvarchar(100)
 AS
-	DECLARE @register_date datetime
-
-	SET @register_date = GETDATE()
-
+BEGIN 
+	SET NOCOUNT ON;
+	DECLARE @register_date datetime = GETDATE()
 ----------------------------------------------------------------
 -- Modificamos el Status de la tablas
 ----------------------------------------------------------------
 
  IF (RTRIM(@TypeOfDB) = 'DBF')
  BEGIN
-	UPDATE a
-	SET    a.tables_number  = b.tbl_count,
-		   a.ssis_number    = b.ssis_number,
-		   a.reports_number = b.reports_number,
-		   a.rules_number   = b.rules_number,
-		   a.modify_user	= @register_user,
-		   a.modify_date	= @register_date
-	FROM dabarc.t_BDF a 
-		INNER JOIN (
-	SELECT COUNT(*)          tbl_count,
-		  COALESCE(SUM(ssis_number),0)  ssis_number,
-		  COALESCE(SUM(reports_number),0) reports_number, 
-		  COALESCE(SUM(rules_number),0) rules_number 
-     FROM dabarc.t_TFF  WHERE database_id = @database_id and registered = 1) b ON a.database_id = @database_id
+	DECLARE @tff_count int;
+	SET @tff_count =  (SELECT COUNT(*) FROM dabarc.t_TFF  WHERE database_id = @database_id and registered = 1);
+	DECLARE @ssis_count int;
+	SET @ssis_count = (SELECT COUNT(*) FROM dabarc.t_SSIS  WHERE database_id = @database_id and registered = 1);
+	
+	UPDATE dabarc.t_BDF
+	SET  tables_number  = @tff_count,
+		 ssis_number    = @ssis_count,
+		 modify_user	= @register_user,
+		 modify_date	= @register_date
+	WHERE database_id = @database_id
   END
-  
   
  IF (RTRIM(@TypeOfDB) = 'DBM')
  BEGIN
-	UPDATE a
-	SET    a.tables_number  = b.tbl_count,
-		   a.ssis_number    = b.ssis_number,
-		   a.reports_number = b.reports_number,
-		   a.rules_number   = b.rules_number,
-		   a.modify_user	= @register_user,
-		   a.modify_date	= @register_date
-	FROM dabarc.t_BDM a 
-		INNER JOIN (
-	SELECT COUNT(*)          tbl_count,
-		   COALESCE(SUM(ssis_number),0)  ssis_number,
-		   COALESCE(SUM(reports_number),0) reports_number, 
-		   COALESCE(SUM(rules_number),0) rules_number 
-     FROM dabarc.t_TDM  WHERE database_id = @database_id and registered = 1) b ON a.database_id = @database_id          
+	
+	DECLARE @table_count int;
+	SET @tff_count =  (SELECT COUNT(*) FROM dabarc.t_TDM  WHERE database_id = @database_id and registered = 1);
+	DECLARE @rules_count int;
+	SET @rules_count = (SELECT COUNT(*) FROM dabarc.t_RDM  WHERE table_id in (select table_id from dabarc.t_TDM where database_id =  @database_id) and registered = 1);
+	DECLARE @reports_count int;
+	SET @reports_count = (SELECT COUNT(*) FROM dabarc.t_IDM  WHERE table_id in (select table_id from dabarc.t_TDM where database_id =  @database_id) and registered = 1);
+	
+	UPDATE dabarc.t_BDM
+	SET    tables_number  = @table_count,
+		   ssis_number    = 0,
+		   reports_number = @rules_count,
+		   rules_number   = @reports_count,
+		   modify_user	  = @register_user,
+		   modify_date	  = @register_date
+    WHERE database_id = @database_id
   END
+END

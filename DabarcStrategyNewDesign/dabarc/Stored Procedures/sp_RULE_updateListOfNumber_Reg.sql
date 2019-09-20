@@ -1,54 +1,42 @@
 ﻿CREATE PROCEDURE  [dabarc].[sp_RULE_updateListOfNumber_Reg] 	
-	(
 		@TypeOfTBL		varchar(5),	
 		@table_id	int,
 		@register_user	nvarchar(50)
-	)	
 AS
- 
- 	DECLARE @register_date datetime
-
-	SET @register_date = GETDATE()
-
+ 	DECLARE @register_date datetime = GETDATE()
 ----------------------------------------------------------------
 -- Modificamos el Status de la tablas
 ----------------------------------------------------------------
 
  IF (RTRIM(@TypeOfTBL) = 'TFF')
  BEGIN
- 	UPDATE a
-	SET    a.rules_number   = b.rules_nunber,
-		   a.modify_user	= @register_user,
-		   a.modify_date	= @register_date
-	FROM t_TFF  a 
-		INNER JOIN (
-	SELECT COUNT(*)          rules_nunber		    
-     FROM t_RFF WHERE table_id = @table_id and registered = 1) b ON a.table_id = @table_id
+    DECLARE @rule_count INT;
+	SET  @rule_count = (SELECT COUNT(*) FROM t_RFF WHERE table_id = @table_id and registered = 1);
+	UPDATE dabarc.t_TFF
+	SET    rules_number   = @rule_count,
+		   modify_user	= @register_user,
+		   modify_date	= @register_date
+	WHERE table_id = @table_id;
  END 
 
- 
  IF (RTRIM(@TypeOfTBL) = 'TDM')
  BEGIN
- 	UPDATE a
-	SET    a.rules_number   = b.rules_nunber,
-		   a.modify_user	= @register_user,
-		   a.modify_date	= @register_date
-	FROM t_TDM  a 
-		INNER JOIN (
-	SELECT COUNT(*)          rules_nunber		    
-     FROM t_RDM WHERE table_id = @table_id and registered = 1) b ON a.table_id = @table_id
+ 	DECLARE @rule_tdm_count INT;
+	SET  @rule_tdm_count = (SELECT COUNT(*) FROM t_RDM WHERE table_id = @table_id and registered = 1);
+	UPDATE t_TDM
+	SET    rules_number   = @rule_tdm_count,
+		   modify_user	= @register_user,
+		   modify_date	= @register_date
+	WHERE table_id = @table_id;
  END 
 
- 
- 
  IF (RTRIM(@TypeOfTBL) = 'TFM')
  BEGIN
- 	UPDATE a
-	SET    a.rules_number   = b.rules_nunber,
-		   a.modify_user	= @register_user,
-		   a.modify_date	= @register_date
-	FROM t_TFM  a 
-		INNER JOIN (
-	SELECT COUNT(*)          rules_nunber		    
-     FROM t_RFM WHERE table_id = @table_id and registered = 1) b ON a.table_id = @table_id
+    DECLARE @rule_tfm_count INT;
+	SET  @rule_tfm_count = (SELECT COUNT(*) FROM t_RFM WHERE table_id = @table_id and registered = 1);
+ 	UPDATE t_TFM
+	SET    rules_number   = @rule_tfm_count,
+		   modify_user	= @register_user,
+		   modify_date	= @register_date
+	WHERE table_id = @table_id;
  END
