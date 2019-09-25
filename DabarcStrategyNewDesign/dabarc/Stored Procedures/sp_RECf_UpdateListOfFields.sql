@@ -6,7 +6,8 @@
 														@field_fieldview	NCHAR(50),
 														@field_fieldspace	BIT,
 														@usuario_modifica	NVARCHAR(100),
-														@screen_id			INT  AS
+														@screen_id			INT,
+														@field_typeentry	NCHAR(10) AS
 													
  ------------------------------------------------------------------------------------------
  --- Validamos que no haya campos repetidos
@@ -33,5 +34,6 @@ IF (SELECT COUNT(*) FROM t_recording_fields WHERE UPPER(RTRIM(field_SAPname)) = 
 	     field_fieldview	= @field_fieldview,
 		 field_fieldspace	= @field_fieldspace,
 		 usuario_modifica	= @usuario_modifica,
-		 fecha_modifica		= GETDATE()
+		 fecha_modifica		= GETDATE(),
+		 field_typeentry    = @field_typeentry
   WHERE	 field_id = @field_id
