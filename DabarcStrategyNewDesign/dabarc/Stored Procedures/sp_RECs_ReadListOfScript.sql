@@ -17,6 +17,7 @@
       ,script_nofields
       ,t.execute_user
       ,t.execute_date
+	  ,t.affected_rows
     FROM t_recording_script t
 		LEFT OUTER JOIN t_recording_team a	ON t.team_id = a.team_id
 		LEFT OUTER JOIN t_BDM b				ON a.team_dbid = b.database_id
